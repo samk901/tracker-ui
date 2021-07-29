@@ -34,8 +34,8 @@ app.use(express.static('public'));
 
 const apiProxyTarget = process.env.API_PROXY_TARGET;
 if (apiProxyTarget) {
-  app.use('/graphql', proxy({ target: apiProxyTarget }));
-  app.use('/auth', proxy({ target: apiProxyTarget }));
+  app.use('/graphql', proxy({ target: apiProxyTarget, changeOrigin: true }));
+  app.use('/auth', proxy({ target: apiProxyTarget, changeOrigin: true }));
 }
 
 if (!process.env.UI_API_ENDPOINT) {
@@ -66,7 +66,7 @@ app.get('*', (req, res, next) => {
   render(req, res, next);
 });
 
-const port = process.env || 8000;
+const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
   console.log(`UI started on port ${port}`);
